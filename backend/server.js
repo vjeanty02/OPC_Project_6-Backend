@@ -79,6 +79,20 @@ app.post('/sauces', (req, res) => {
     res.status(404).json({ error });
   });
 });
+
+// Créer une route PUT qui modifiera le produit avec l'_id fourni
+app.put('/sauces/:id', (req, res) => {
+  Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+  .then(() => {
+    console.log('PUT request successful');
+    res.status(200).json({ product: req.body});
+  })
+  .catch(error => {
+    console.log('PUT request failed. Error:', error);
+    res.status(400).json({ error });
+  });
+});
+
 // Démarre le serveur et affiche un message dans la console
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
