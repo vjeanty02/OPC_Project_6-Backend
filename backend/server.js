@@ -34,6 +34,9 @@ app.use((req, res, next) => {
     next();
   });
 
+// Utiliser le middleware express.json() pour parser les requêtes avec des données au format JSON
+app.use(express.json());
+
 // Créer une route GET qui retournera tous les produits
 app.get('/sauces', (req, res) => {
   Thing.find()
@@ -60,6 +63,22 @@ app.get('/sauces/:id', (req, res) => {
   });
 });
 
+// crée une route POST qui créera un nouveau Product dans la base de données, en utilisant la méthode app.post d’express
+app.post('/sauces', (req, res) => {
+  delete req.body._id;
+  const thing = new Thing({
+    ...req.body
+  });
+  thing.save()
+  .then(Sauce => {
+    console.log('POST request successful');
+    res.status(200).json({product:Sauce});
+  })
+  .catch(error => {
+    console.log('POST request failed. Error:', error);
+    res.status(404).json({ error });
+  });
+});
 // Démarre le serveur et affiche un message dans la console
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
