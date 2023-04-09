@@ -26,7 +26,7 @@ const thingSchema = new mongoose.Schema({
 });
 
 // Créer un modèle à partir du schéma
-const User = mongoose.model('Thing', thingSchema);
+const Thing = mongoose.model('Thing', thingSchema);
 
 // Middleware pour gérer les requêtes
 app.use((req, res, next) => {
@@ -34,7 +34,13 @@ app.use((req, res, next) => {
     next();
   });
 
-// créer les routes
+// créer une route GET qui retournera tous les produits
+app.get('/api/products', (req, res) => {
+  Thing.find()
+    .then(Products => res.status(200).json({products:Products}))
+    .catch(error => res.status(400).json({ error }));
+});
+
 // démarre le serveur et affiche un message dans la console
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
