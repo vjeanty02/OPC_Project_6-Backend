@@ -93,6 +93,18 @@ app.put('/sauces/:id', (req, res) => {
   });
 });
 
+// crée une route DELETE qui supprimera le produit avec le _id fourni
+app.delete('/sauces/:id', (req, res) => {
+  Thing.deleteOne({ _id: req.params.id })
+  .then(() => {
+    console.log('DELETE request successful');
+    res.status(200).json({ message: 'Objet supprimé !'})
+})
+  .catch(error => {
+    console.log('DELETE request failed. Error:', error);
+    res.status(400).json({ error })});
+});
+
 // Démarre le serveur et affiche un message dans la console
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
