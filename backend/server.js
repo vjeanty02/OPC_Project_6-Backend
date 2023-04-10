@@ -3,7 +3,8 @@
 // Installer les modules nécessaires
 const express = require('express'); 
 const mongoose = require('mongoose');
-const cors = require('cors')
+const cors = require('cors');
+const uniqueValidator = require('mongoose-unique-validator');
 
 // Définir le port d'écoute
 const port = process.env.PORT || 3000;
@@ -18,7 +19,7 @@ mongoose.connect('mongodb+srv://vjeanty02:jesus123@cluster0.1sagvzb.mongodb.net/
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-// Définir un schéma pour les données
+// Définir un schéma pour les données pour les produits sauces
 const thingSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
