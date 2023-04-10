@@ -3,6 +3,7 @@
 // Installer les modules nécessaires
 const express = require('express'); 
 const mongoose = require('mongoose');
+const cors = require('cors')
 
 // Définir le port d'écoute
 const port = process.env.PORT || 3000;
@@ -41,12 +42,12 @@ app.use(express.json());
 app.get('/sauces', (req, res) => {
   Thing.find()
     .then(Sauces => {
-      console.log('GET request successful');
       res.status(200).json({products:Sauces});
+      console.log('GET request successful');
     })
     .catch(error => {
-      console.log('GET request failed. Error:', error);
       res.status(400).json({ error });
+      console.log('GET request failed. Error:', error);
     });
 });
 
@@ -54,12 +55,12 @@ app.get('/sauces', (req, res) => {
 app.get('/sauces/:id', (req, res) => {
   Thing.findOne({ _id: req.params.id })
   .then(Sauce => {
-    console.log('GET:id request successful');
     res.status(200).json({product:Sauce});
+    console.log('GET:id request successful');
   })
   .catch(error => {
-    console.log('GET request failed. Error:', error);
     res.status(404).json({ error });
+    console.log('GET request failed. Error:', error);
   });
 });
 
@@ -71,12 +72,12 @@ app.post('/sauces', (req, res) => {
   });
   thing.save()
   .then(Sauce => {
-    console.log('POST request successful');
     res.status(200).json({product:Sauce});
+    console.log('POST request successful');
   })
   .catch(error => {
-    console.log('POST request failed. Error:', error);
     res.status(404).json({ error });
+    console.log('POST request failed. Error:', error);
   });
 });
 
@@ -84,12 +85,12 @@ app.post('/sauces', (req, res) => {
 app.put('/sauces/:id', (req, res) => {
   Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
   .then(() => {
-    console.log('PUT request successful');
     res.status(200).json({ product: req.body});
+    console.log('PUT request successful');
   })
   .catch(error => {
-    console.log('PUT request failed. Error:', error);
     res.status(400).json({ error });
+    console.log('PUT request failed. Error:', error);
   });
 });
 
@@ -97,12 +98,12 @@ app.put('/sauces/:id', (req, res) => {
 app.delete('/sauces/:id', (req, res) => {
   Thing.deleteOne({ _id: req.params.id })
   .then(() => {
-    console.log('DELETE request successful');
     res.status(200).json({ message: 'Objet supprimé !'})
+    console.log('DELETE request successful');
 })
   .catch(error => {
-    console.log('DELETE request failed. Error:', error);
     res.status(400).json({ error })});
+    console.log('DELETE request failed. Error:', error);
 });
 
 // Démarre le serveur et affiche un message dans la console
