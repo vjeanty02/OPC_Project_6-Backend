@@ -9,7 +9,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 // Définir le port d'écoute
 const port = process.env.PORT || 3000;
 
-// creation d'une application express
+// Creation d'une application express
 const app = express(); 
 
 // Se connecter à la base de données mongodb, en utilisant la méthode mongoose.connect
@@ -78,7 +78,7 @@ app.get('/sauces/:id', (req, res) => {
   });
 });
 
-// crée une route POST qui créera un nouveau Product dans la base de données, en utilisant la méthode app.post d’express
+// Créer une route POST qui créera un nouveau Product dans la base de données, en utilisant la méthode app.post d’express
 app.post('/sauces', (req, res) => {
   delete req.body._id;
   const thing = new Thing({
@@ -108,7 +108,7 @@ app.put('/sauces/:id', (req, res) => {
   });
 });
 
-// crée une route DELETE qui supprimera le produit avec le _id fourni
+// Créer une route DELETE qui supprimera le produit avec le _id fourni
 app.delete('/sauces/:id', (req, res) => {
   Thing.deleteOne({ _id: req.params.id })
   .then(() => {
@@ -120,8 +120,7 @@ app.delete('/sauces/:id', (req, res) => {
     console.log('DELETE request failed. Error:', error);
 });
 
-// Démarre le serveur et affiche un message dans la console
+// Démarres le serveur et affiche un message dans la console
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
-
