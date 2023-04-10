@@ -26,17 +26,20 @@ const thingSchema = new mongoose.Schema({
   inStock: { type: Boolean, required: true }
 });
 
-// Créer un modèle à partir du schéma
 const Thing = mongoose.model('Thing', thingSchema);
-
-// Middleware pour gérer les requêtes
-app.use((req, res, next) => {
-    console.log('Réponse envoyée avec succès !');
-    next();
-  });
 
 // Utiliser le middleware express.json() pour parser les requêtes avec des données au format JSON
 app.use(express.json());
+
+// Définir les options du middleware cors
+const corsOptions = {
+  origin: '*', // Autoriser toutes les origines
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content', 'Accept', 'Content-Type', 'Authorization'], // Autoriser les en-têtes spécifiés
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Autoriser les méthodes spécifiées
+}
+
+// Utiliser le middleware cors avec les options définies seulement pour la route /sauces
+app.use('/sauces', cors(corsOptions))
 
 // Créer une route GET qui retournera tous les produits
 app.get('/sauces', (req, res) => {
