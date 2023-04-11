@@ -66,7 +66,7 @@ app.get('/sauces', (req, res) => {
 });
 
 // Créer une route GET qui retournera le produit avec l'_id fourni
-app.get('/sauces/:id', (req, res) => {
+app.get('/api/sauces/:id', (req, res) => {
   Thing.findOne({ _id: req.params.id })
   .then(Sauce => {
     res.status(200).json({product:Sauce});
@@ -79,7 +79,7 @@ app.get('/sauces/:id', (req, res) => {
 });
 
 // Créer une route POST qui créera un nouveau Product dans la base de données, en utilisant la méthode app.post d’express
-app.post('/sauces', (req, res) => {
+app.post('/api/sauces', (req, res) => {
   delete req.body._id;
   const thing = new Thing({
     ...req.body
@@ -96,7 +96,7 @@ app.post('/sauces', (req, res) => {
 });
 
 // Créer une route PUT qui modifiera le produit avec l'_id fourni
-app.put('/sauces/:id', (req, res) => {
+app.put('/api/sauces/:id', (req, res) => {
   Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
   .then(() => {
     res.status(200).json({ product: req.body});
@@ -109,7 +109,7 @@ app.put('/sauces/:id', (req, res) => {
 });
 
 // Créer une route DELETE qui supprimera le produit avec le _id fourni
-app.delete('/sauces/:id', (req, res) => {
+app.delete('/api/sauces/:id', (req, res) => {
   Thing.deleteOne({ _id: req.params.id })
   .then(() => {
     res.status(200).json({ message: 'Objet supprimé !'})
