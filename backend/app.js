@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const uniqueValidator = require('mongoose-unique-validator');
 
+
+const Sauce = require('./models/Sauce.js');
+
 // Creation d'une application express
 const app = express(); 
 
@@ -13,23 +16,6 @@ mongoose.connect('mongodb+srv://vjeanty02:jesus123@cluster0.1sagvzb.mongodb.net/
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-// Définir un schéma pour les données (produits sauces)
-const sauceSchema = mongoose.Schema ({
-    userId: { type: String, required: true },
-    name: { type: String, required: true },
-    manufacturer: { type: String, required: true },
-    description: { type: String, required: true },
-    mainPepper: { type: String, required: true },
-    imageUrl: { type: String, required: true },
-    heat: { type: Number, required: true },
-    likes: { type: Number, default: 0},
-    dislikes: { type: Number, default: 0},
-    usersLiked: [{ type: String, required: true }],
-    usersDisliked: [{ type: String, required: true }],
-  });
-
-const Sauce = mongoose.model('Sauce', sauceSchema);
 
 // Définir un schéma pour les données (utilisateurs)
 const userSchema = mongoose.Schema({
