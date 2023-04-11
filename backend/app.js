@@ -16,16 +16,6 @@ mongoose.connect('mongodb+srv://vjeanty02:jesus123@cluster0.1sagvzb.mongodb.net/
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-// Définir un schéma pour les données (utilisateurs)
-const userSchema = mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
-});
-
-userSchema.plugin(uniqueValidator);
-
-mongoose.model('User', userSchema);
-
 // Utiliser le middleware express.json() pour parser les requêtes avec des données au format JSON
 app.use(express.json());
 
