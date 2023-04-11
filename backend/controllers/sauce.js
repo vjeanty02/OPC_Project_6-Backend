@@ -41,17 +41,33 @@ exports.create = (req, res) => {
   });
 };
 
-exports.modify = (req, res) => {
-Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-  .then(() => {
-    res.status(200).json({ product: req.body});
-    console.log('PUT request successful');
-  })
-  .catch(error => {
-    res.status(400).json({ error });
-    console.log('PUT request failed. Error:', error);
-  });
+exports.modify = (req, res) => {  
+  const sauceObject = req.file ? {
+      ...JSON.parse(req.body.sauce),
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  } : { ...req.body };
+  delete sauceObject.userId;
+  Sauce.findOne({_id: req.params.id})
+      .then((sauce) => {
+          if (sauce.userId != req.auth.userId) {
+              res.status(401).json({ message : 'Non autorisé'});
+              console.log('Non autorisé');
+
+          } else {
+              Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
+              .then(() => {
+                const filename = sauce.imageUrl.split('/images/')[1];
+                fs.unlink('images/' + filename, () => {});
+            return res.status(200).json({message : 'Sauce modifié!'})
+              })
+              .catch(error => res.status(401).json({ error }));
+          }
+      })
+      .catch((error) => {
+          res.status(400).json({ error });
+      });
 };
+
 
 exports.delete = (req, res) => {
 Sauce.deleteOne({ _id: req.params.id })
