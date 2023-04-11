@@ -2,7 +2,6 @@
 const express = require('express'); 
 const mongoose = require('mongoose');
 const cors = require('cors');
-const uniqueValidator = require('mongoose-unique-validator');
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -31,5 +30,6 @@ const corsOptions = {
 // Utiliser le middleware cors avec les options définies seulement pour la route /sauces
 app.use('/api/sauces', cors(corsOptions));
 app.use('/api/sauces', sauceRoutes);
-app.use('/api/', userRoutes);
+app.use('/api/auth', cors(corsOptions));
+app.use('/api/auth', userRoutes);
 module.exports = app;

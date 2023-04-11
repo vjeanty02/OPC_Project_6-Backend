@@ -1,7 +1,6 @@
 const Sauce = require('../models/Sauce.js');
 
-
-exports.getAll = (req, res) => {
+exports.getAll = (req, res, next) => {
 Sauce.find()
     .then(Sauces => {
       res.status(200).json({products:Sauces});
@@ -13,7 +12,7 @@ Sauce.find()
     });
 };
 
-exports.getOne = (req, res) => {
+exports.getOne = (req, res, next) => {
 Sauce.findOne({ _id: req.params.id })
   .then(Sauce => {
     res.status(200).json({product:Sauce});
@@ -25,7 +24,7 @@ Sauce.findOne({ _id: req.params.id })
   });
 };
 
-exports.create = (req, res) => {
+exports.create = (req, res, next) => {
   delete req.body._id;
   const sauce = new Sauce({
     ...req.body
@@ -41,7 +40,7 @@ exports.create = (req, res) => {
   });
 };
 
-exports.modify = (req, res) => {  
+exports.modify = (req, res, next) => {  
   const sauceObject = req.file ? {
       ...JSON.parse(req.body.sauce),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
