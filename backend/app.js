@@ -15,14 +15,21 @@ mongoose.connect('mongodb+srv://vjeanty02:jesus123@cluster0.1sagvzb.mongodb.net/
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 // Définir un schéma pour les données (produits sauces)
-const thingSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  inStock: { type: Boolean, required: true }
-});
+const sauceSchema = mongoose.Schema ({
+    userId: { type: String, required: true },
+    name: { type: String, required: true },
+    manufacturer: { type: String, required: true },
+    description: { type: String, required: true },
+    mainPepper: { type: String, required: true },
+    imageUrl: { type: String, required: true },
+    heat: { type: Number, required: true },
+    likes: { type: Number, default: 0},
+    dislikes: { type: Number, default: 0},
+    usersLiked: [{ type: String, required: true }],
+    usersDisliked: [{ type: String, required: true }],
+  });
 
-const Thing = mongoose.model('Thing', thingSchema);
+const Sauce = mongoose.model('Sauce', sauceSchema);
 
 // Définir un schéma pour les données (utilisateurs)
 const userSchema = mongoose.Schema({
@@ -49,7 +56,7 @@ app.use('/api/sauces', cors(corsOptions))
 
 // Créer une route GET qui retournera tous les produits
 app.get('/api/sauces', (req, res) => {
-  Thing.find()
+Sauce.find()
     .then(Sauces => {
       res.status(200).json({products:Sauces});
       console.log('GET request successful');
@@ -62,7 +69,7 @@ app.get('/api/sauces', (req, res) => {
 
 // Créer une route GET qui retournera le produit avec l'_id fourni
 app.get('/api/sauces/:id', (req, res) => {
-  Thing.findOne({ _id: req.params.id })
+Sauce.findOne({ _id: req.params.id })
   .then(Sauce => {
     res.status(200).json({product:Sauce});
     console.log('GET:id request successful');
@@ -76,10 +83,10 @@ app.get('/api/sauces/:id', (req, res) => {
 // Créer une route POST qui créera un nouveau Product dans la base de données, en utilisant la méthode app.post d’express
 app.post('/api/sauces', (req, res) => {
   delete req.body._id;
-  const thing = new Thing({
+  const sauce = new Sauce({
     ...req.body
   });
-  thing.save()
+  sauce.save()
   .then(Sauce => {
     res.status(200).json({product:Sauce});
     console.log('POST request successful');
@@ -92,7 +99,7 @@ app.post('/api/sauces', (req, res) => {
 
 // Créer une route PUT qui modifiera le produit avec l'_id fourni
 app.put('/api/sauces/:id', (req, res) => {
-  Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
   .then(() => {
     res.status(200).json({ product: req.body});
     console.log('PUT request successful');
@@ -105,7 +112,7 @@ app.put('/api/sauces/:id', (req, res) => {
 
 // Créer une route DELETE qui supprimera le produit avec le _id fourni
 app.delete('/api/sauces/:id', (req, res) => {
-  Thing.deleteOne({ _id: req.params.id })
+Sauce.deleteOne({ _id: req.params.id })
   .then(() => {
     res.status(200).json({ message: 'Objet supprimé !'})
     console.log('DELETE request successful');
