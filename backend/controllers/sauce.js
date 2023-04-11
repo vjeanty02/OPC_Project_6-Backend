@@ -1,7 +1,7 @@
 const Sauce = require('../models/Sauce.js');
 
 
-exports.getAll = (req, res, next) => {
+exports.getAll = (req, res) => {
 Sauce.find()
     .then(Sauces => {
       res.status(200).json({products:Sauces});
@@ -13,7 +13,7 @@ Sauce.find()
     });
 };
 
-exports.getOne = (req, res, next) => {
+exports.getOne = (req, res) => {
 Sauce.findOne({ _id: req.params.id })
   .then(Sauce => {
     res.status(200).json({product:Sauce});
@@ -25,7 +25,7 @@ Sauce.findOne({ _id: req.params.id })
   });
 };
 
-exports.create = (req, res, next) => {
+exports.create = (req, res) => {
   delete req.body._id;
   const sauce = new Sauce({
     ...req.body
@@ -41,7 +41,7 @@ exports.create = (req, res, next) => {
   });
 };
 
-exports.modify = (req, res, next) => {
+exports.modify = (req, res) => {
 Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
   .then(() => {
     res.status(200).json({ product: req.body});
@@ -53,13 +53,19 @@ Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
   });
 };
 
-exports.delete = (req, res, next) => {
+exports.delete = (req, res) => {
 Sauce.deleteOne({ _id: req.params.id })
   .then(() => {
     res.status(200).json({ message: 'Objet supprimé !'})
     console.log('DELETE request successful');
-})
+  })
   .catch(error => {
-    res.status(400).json({ error })});
+    res.status(400).json({ error })
     console.log('DELETE request failed. Error:', error);
+  });
 };
+
+exports.like = (req , res) => {
+    
+}
+
