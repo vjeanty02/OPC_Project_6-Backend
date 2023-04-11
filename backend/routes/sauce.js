@@ -16,7 +16,7 @@ Sauce.find()
 });
 
 // Créer une route GET qui retournera le produit avec l'_id fourni
-router.get('/api/sauces/:id', (req, res) => {
+router.get('/:id', (req, res) => {
 Sauce.findOne({ _id: req.params.id })
   .then(Sauce => {
     res.status(200).json({product:Sauce});
@@ -29,7 +29,7 @@ Sauce.findOne({ _id: req.params.id })
 });
 
 // Créer une route POST qui créera un nouveau Product dans la base de données, en utilisant la méthode app.post d’express
-router.post('/api/sauces', (req, res) => {
+router.post('/', (req, res) => {
   delete req.body._id;
   const sauce = new Sauce({
     ...req.body
@@ -46,7 +46,7 @@ router.post('/api/sauces', (req, res) => {
 });
 
 // Créer une route PUT qui modifiera le produit avec l'_id fourni
-router.put('/api/sauces/:id', (req, res) => {
+router.put('/:id', (req, res) => {
 Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
   .then(() => {
     res.status(200).json({ product: req.body});
@@ -59,7 +59,7 @@ Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
 });
 
 // Créer une route DELETE qui supprimera le produit avec le _id fourni
-router.delete('/api/sauces/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
 Sauce.deleteOne({ _id: req.params.id })
   .then(() => {
     res.status(200).json({ message: 'Objet supprimé !'})
