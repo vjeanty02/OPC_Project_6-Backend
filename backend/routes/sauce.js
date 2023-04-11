@@ -1,73 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const Sauce = require('../models/Sauce.js');
+const sauceCtrl = require('../controllers/sauce.js')
 
 // Créer une route GET qui retournera tous les produits
-router.get('/', (req, res) => {
-Sauce.find()
-    .then(Sauces => {
-      res.status(200).json({products:Sauces});
-      console.log('GET request successful');
-    })
-    .catch(error => {
-      res.status(400).json({ error });
-      console.log('GET request failed. Error:', error);
-    });
-});
+router.get('/', sauceCtrl.getAll);
 
 // Créer une route GET qui retournera le produit avec l'_id fourni
-router.get('/:id', (req, res) => {
-Sauce.findOne({ _id: req.params.id })
-  .then(Sauce => {
-    res.status(200).json({product:Sauce});
-    console.log('GET:id request successful');
-  })
-  .catch(error => {
-    res.status(404).json({ error });
-    console.log('GET request failed. Error:', error);
-  });
-});
+router.get('/:id', sauceCtrl.getOne);
 
 // Créer une route POST qui créera un nouveau Product dans la base de données, en utilisant la méthode app.post d’express
-router.post('/', (req, res) => {
-  delete req.body._id;
-  const sauce = new Sauce({
-    ...req.body
-  });
-  sauce.save()
-  .then(Sauce => {
-    res.status(200).json({product:Sauce});
-    console.log('POST request successful');
-  })
-  .catch(error => {
-    res.status(404).json({ error });
-    console.log('POST request failed. Error:', error);
-  });
-});
+router.post('/', sauceCtrl.create);
 
 // Créer une route PUT qui modifiera le produit avec l'_id fourni
-router.put('/:id', (req, res) => {
-Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-  .then(() => {
-    res.status(200).json({ product: req.body});
-    console.log('PUT request successful');
-  })
-  .catch(error => {
-    res.status(400).json({ error });
-    console.log('PUT request failed. Error:', error);
-  });
-});
+router.put('/:id', sauceCtrl.modify);
 
 // Créer une route DELETE qui supprimera le produit avec le _id fourni
-router.delete('/:id', (req, res) => {
-Sauce.deleteOne({ _id: req.params.id })
-  .then(() => {
-    res.status(200).json({ message: 'Objet supprimé !'})
-    console.log('DELETE request successful');
-})
-  .catch(error => {
-    res.status(400).json({ error })});
-    console.log('DELETE request failed. Error:', error);
-});
+router.delete('/:id', sauceCtrl.delete);
+
 
 module.exports = router;
