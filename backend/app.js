@@ -6,6 +6,7 @@ const cors = require('cors');
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 
+const path = require('path');
 
 // Creation d'une application express
 const app = express(); 
@@ -19,6 +20,7 @@ mongoose.connect('mongodb+srv://vjeanty02:jesus123@cluster0.1sagvzb.mongodb.net/
 
 // Utiliser le middleware express.json() pour parser les requêtes avec des données au format JSON
 app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Définir les options du middleware cors
 const corsOptions = {
@@ -26,10 +28,10 @@ const corsOptions = {
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content', 'Accept', 'Content-Type', 'Authorization'], // Autoriser les en-têtes spécifiés
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Autoriser les méthodes spécifiées
 }
+app.use(cors(corsOptions))
 
 // Utiliser le middleware cors avec les options définies seulement pour la route /sauces
-app.use('/api/sauces', cors(corsOptions));
 app.use('/api/sauces', sauceRoutes);
-app.use('/api/auth', cors(corsOptions));
 app.use('/api/auth', userRoutes);
+
 module.exports = app;
