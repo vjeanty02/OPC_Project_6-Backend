@@ -71,7 +71,41 @@ exports.delete = (req, res, next) => {
       });
 }
 
-exports.like = (req , res) => {
-    
-}
+// Constantes pour les valeurs de like
+const LIKE = 1;
+const DISLIKE = -1;
+const NEUTRAL = 0;
+
+exports.like = (req, res, next) => {
+    const { userId, like } = req.body; 
+    const sauceId = req.params.id; 
+
+    const updateSauce = (update) => {
+        Sauce.updateOne({ _id: sauceId }, update)
+            .then(() => res.status(200).json({ message: 'Sauce mise à jour !' }))
+            .catch(error => res.status(401).json({ error }));
+    };
+
+    switch (like) {
+        case LIKE: // Cas du like
+            updateSauce({ $push: { usersLiked: userId }, $inc: { likes: +1 } });
+            break;
+        case DISLIKE: // Cas du dislike
+            updateSauce({ $push: { usersDisliked: userId }, $inc: { dislikes: +1 } });
+            break;
+        case NEUTRAL: // Cas du like ou dislike annulé
+            Sauce.findOne({ _id: sauceId })
+                .then(sauce => {
+                    if (sauce.usersLiked.includes(userId)) { // Si l'utilisateur avait liké la sauce
+                        updateSauce({ $pull: { usersLiked: userId }, $inc: { likes: -1 } });
+                    } else if (sauce.usersDisliked.includes(userId)) { // Si l'utilisateur avait disliké la sauce
+                        updateSauce({ $pull: { usersDisliked: userId }, $inc: { dislikes: -1 } });
+                    }
+                })
+                .catch(error => res.status(401).json({ error }));
+            break;
+        default:
+            res.status(400).json({ message: 'Valeur de like invalide !' }); // Cas d'une valeur de like incorrecte
+    }
+};
 
