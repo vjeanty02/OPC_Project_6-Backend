@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config()
 const helmet = require('helmet');
+const Ddos = require('ddos');
+const ddos = new Ddos;
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -25,6 +27,7 @@ app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(helmet());
+app.use(ddos.express);
 
 // Définir les options du middleware cors
 const corsOptions = {
