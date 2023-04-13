@@ -25,7 +25,8 @@ mongoose.connect(process.env.DB_URL,
 // Utiliser le middleware express.json() pour parser les requêtes avec des données au format JSON
 app.use(express.json());
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+const imagesPath = path.join(__dirname, 'images');
+app.use('/images', express.static(imagesPath));
 app.use(helmet());
 app.use(ddos.express);
 
