@@ -2,6 +2,7 @@
 const express = require('express'); 
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config()
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -12,7 +13,7 @@ const path = require('path');
 const app = express(); 
 
 // Se connecter à la base de données mongodb, en utilisant la méthode mongoose.connect
-mongoose.connect('mongodb+srv://vjeanty02:jesus123@cluster0.1sagvzb.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.DB_URL,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))

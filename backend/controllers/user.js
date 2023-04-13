@@ -32,7 +32,7 @@ const User = require('../models/User.js');
                         userId: user._id,
                         token: jwt.sign(
                             { userId: user._id },
-                            'RANDOM_TOKEN_SECRET',
+                            process.env.SECRET,
                             { expiresIn: '24h' }
                         )
                     });
