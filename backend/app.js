@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config()
+const helmet = require('helmet');
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -21,7 +22,9 @@ mongoose.connect(process.env.DB_URL,
 
 // Utiliser le middleware express.json() pour parser les requêtes avec des données au format JSON
 app.use(express.json());
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(helmet());
 
 // Définir les options du middleware cors
 const corsOptions = {
