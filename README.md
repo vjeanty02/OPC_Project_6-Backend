@@ -50,6 +50,6 @@ Pour installer et exécuter ce projet, vous devez installer la partie frontend e
 7. Ouvrir un navigateur, aller sur `localhost:4200/` et profiter de l'application
 
 
-## Licence et contribution
+## Licence
 
 Ce projet est sous licence MIT. Vous pouvez le copier, le modifier et le redistribuer librement.
