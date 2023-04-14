@@ -43,8 +43,9 @@ Pour installer et exécuter ce projet, vous devez installer la partie frontend e
 4. Cloner ensuite la partie backend avec la commande : `git clone https://github.com/vjeanty02/OPC_Project_6-backend.git`
 5. Ouvrir le projet dans un terminal, s'il n'existe pas déjà, créer un fichier `.env` avec le code suivant :
 
-`DB_URL= <Votre_Url_de_connexion_MongoDB>
-SECRET=<Votre_TOKEN>`. 
+  `DB_URL= <Votre_Url_de_connexion_MongoDB>
+   SECRET=<Votre_TOKEN>`. 
+   
 6. Lancer les commandes `npm install` et `npm start`. 
 7. Ouvrir un navigateur, aller sur `localhost:4200/` et profiter de l'application
 
