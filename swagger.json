@@ -246,12 +246,12 @@
               "description": "The sauce was created successfully",
               "content": {
                 "application/json": {
-                  "$ref":"#/components/schemas/Sauce"
+                 
                 }
               }
             },
             "400": {
-              "$ref":"#/components/responses/BadRequest"
+             
             }
           }
         }
