@@ -4,11 +4,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config()
 const helmet = require('helmet');
+const { swaggerUi, swaggerSpec } = require('./swagger.js')
 const Ddos = require('ddos');
 const ddos = new Ddos;
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
+const swaggerDocument = require('./swagger.json')
 
 const path = require('path');
 
@@ -21,6 +23,8 @@ mongoose.connect(process.env.DB_URL,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Utiliser le middleware express.json() pour parser les requêtes avec des données au format JSON
 app.use(express.json());

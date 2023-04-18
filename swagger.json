@@ -1,0 +1,566 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Piquante API",
+      "version": "1.0.0",
+      "description": "Une API pour une application d'avis gastronomiques sur des sauces piquantes"
+    },
+    
+    "servers": [
+      {
+        "url": "http://localhost:3000"
+      }
+    ],
+    "paths": {
+      "/api/auth/signup": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Create a new user",
+          "description": "Create a new user with an email and a password",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "The user email"
+                    },
+                    "password": {
+                      "type": "string",
+                      "format": "password",
+                      "description": "The user password"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "password"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "The user was created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "string",
+                        "description": "The user id"
+                      },
+                      "token": {
+                        "type": "string",
+                        "description": "The authentication token"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "The email is not valid or already taken"
+            }
+          }
+        }
+      },
+      "/api/auth/login": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Log in with an email and a password",
+          "description": "Log in with an email and a password and get an authentication token",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "The user email"
+                    },
+                    "password": {
+                      "type": "string",
+                      "format": "password",
+                      "description": "The user password"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "password"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The user was logged in successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "string",
+                        "description": "The user id"
+                      },
+                      "token": {
+                        "type": "string",
+                        "description": "The authentication token"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "The email or password is incorrect"
+            }
+          }
+        }
+      },
+      "/api/sauces": {
+        "get": {
+          "tags": [
+            "Sauces"
+          ],
+          "summary": "Get all sauces",
+          "description": "Return an array of sauces with their details",
+          "responses": {
+            "200": {
+              "description": "The sauces were retrieved successfully",
+              "content": {
+                "application/json": {
+                    "schema": {
+                        "userId": {
+                            "type": "string",
+                            "required": true
+                          },
+                          "name": {
+                            "type": "string",
+                            "required": true
+                          },
+                          "manufacturer": {
+                            "type": "string",
+                            "required": true
+                          },
+                          "description": {
+                            "type": "string",
+                            "required": true
+                          },
+                          "mainPepper": {
+                            "type": "string",
+                            "required": true
+                          },
+                          "imageUrl": {
+                            "type": "string",
+                            "required": true
+                          },
+                          "heat": {
+                            "type": "number",
+                            "required": true
+                          },
+                          "likes": {
+                            "type": "number",
+                            "default": 0
+                          },
+                          "dislikes": {
+                            "type": "number",
+                            "default": 0
+                          },
+                          "usersLiked": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "required": true
+                          },
+                          "usersDisliked": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "required": true
+                          }
+                      }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No sauces were found"
+            }
+          }
+        ,
+        "post": {
+          "tags": [
+            "Sauces"
+          ],
+          "summary": "Create a new sauce",
+          "description": "Create a new sauce with a name, an image and a description",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "The sauce name"
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "The sauce image"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "The sauce description"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "image",
+                    "description"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "The sauce was created successfully",
+              "content": {
+                "application/json": {
+                  "$ref":"#/components/schemas/Sauce"
+                }
+              }
+            },
+            "400": {
+              "$ref":"#/components/responses/BadRequest"
+            }
+          }
+        }
+      },
+      "/api/sauces/:id": {
+        "get": {
+          "tags": [
+            "Sauces"
+          ],
+          "summary": "Get a sauce by id",
+          "description": "Return the details of a sauce with the given id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "The sauce id",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The sauce was found and returned",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "userId": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "name": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "manufacturer": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "description": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "mainPepper": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "imageUrl": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "heat": {
+                        "type": "number",
+                        "required": true
+                      },
+                      "likes": {
+                        "type": "number",
+                        "default": 0
+                      },
+                      "dislikes": {
+                        "type": "number",
+                        "default": 0
+                      },
+                      "usersLiked": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "required": true
+                      },
+                      "usersDisliked": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "required": true
+                      }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "The sauce was not found"
+            }
+          }
+        },
+        "delete": {
+            "tags": [
+              "Sauces"
+            ],
+            "summary": "Delete a sauce by id",
+            "description": "Remove a sauce with the given id from the database",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "The sauce id",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "The sauce was deleted successfully"
+              },
+              "401": {
+                "description": "The user is not authorized to delete the sauce"
+              },
+              "404": {
+                "description": "The sauce was not found"
+              }
+            }
+          },
+        "put": {
+            "tags": [
+              "Sauces"
+            ],
+            "summary": "Update a sauce by id",
+            "description": "Modify the details of a sauce with the given id",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "The sauce id",
+                "schema": {
+                    "userId": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "name": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "manufacturer": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "description": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "mainPepper": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "imageUrl": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "heat": {
+                        "type": "number",
+                        "required": true
+                      },
+                      "likes": {
+                        "type": "number",
+                        "default": 0
+                      },
+                      "dislikes": {
+                        "type": "number",
+                        "default": 0
+                      },
+                      "usersLiked": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "required": true
+                      },
+                      "usersDisliked": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "required": true
+                      }
+                }
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "multipart/form-data": {
+                  "schema": {
+                    "userId": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "name": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "manufacturer": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "description": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "mainPepper": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "imageUrl": {
+                        "type": "string",
+                        "required": true
+                      },
+                      "heat": {
+                        "type": "number",
+                        "required": true
+                      },
+                      "likes": {
+                        "type": "number",
+                        "default": 0
+                      },
+                      "dislikes": {
+                        "type": "number",
+                        "default": 0
+                      },
+                      "usersLiked": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "required": true
+                      },
+                      "usersDisliked": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "required": true
+                      }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "The sauce was updated successfully"
+              },
+              "400": {
+                "description": "The request body is not valid"
+              },
+              "404": {
+                "description": "The sauce was not found"
+              }
+            }
+          }
+      },
+      "/api/sauces/:id/like": {
+        "post": {
+          "tags": [
+            "Sauces"
+          ],
+          "summary": "Like or dislike a sauce",
+          "description": "Update the likes and dislikes of a sauce based on the user's preference",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "The sauce id",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "string",
+                      "description": "The user id"
+                    },
+                    "like": {
+                      "type": "integer",
+                      "enum": [-1, 0, 1],
+                      "description": "-1 if the user dislikes the sauce, 0 if the user cancels their like/dislike, 1 if the user likes the sauce"
+                    }
+                  },
+                  "required": [
+                    "userId",
+                    "like"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The sauce was updated successfully"
+            },
+            "400": {
+              "description": "The request body is not valid"
+            },
+            "404": {
+              "description": "The sauce was not found"
+            }
+          }
+        }
+      }
+    }
+  }
