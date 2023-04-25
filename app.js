@@ -1,7 +1,6 @@
 // Installer les modules nécessaires
 const express = require('express'); 
 const mongoose = require('mongoose');
-const cors = require('cors');
 require('dotenv').config()
 const helmet = require('helmet');
 const { swaggerUi, swaggerSpec } = require('./swagger.js')
@@ -34,15 +33,13 @@ app.use('/images', express.static(imagesPath));
 app.use(helmet());
 app.use(ddos.express);
 
-// Définir les options du middleware cors
-const corsOptions = {
-  origin: '*', // Autoriser toutes les origines
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content', 'Accept', 'Content-Type', 'Authorization'], // Autoriser les en-têtes spécifiés
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Autoriser les méthodes spécifiées
-}
-app.use(cors(corsOptions))
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  next();
+});
 
-// Utiliser le middleware cors avec les options définies seulement pour la route /sauces
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
 
